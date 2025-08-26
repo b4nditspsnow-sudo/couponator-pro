@@ -1,0 +1,35 @@
+{
+  "categories": [
+    {
+      "name": "Еда и доставка",
+      "offers": [
+        {
+          "id": "cpa_yandex_food_300",
+          "type": "cpa",
+          "title": "Яндекс Еда −300₽",
+          "base_url": "https://YOUR_CPA_LINK/yandex-food",
+          "active": true
+        },
+        {
+          "id": "coupon_samokat_150",
+          "type": "coupon",
+          "title": "Самокат −150₽ (одноразовый код)",
+          "price": 150,
+          "active": true
+        }
+      ]
+    },
+    {
+      "name": "Такси",
+      "offers": [
+        {
+          "id": "cpa_taxi_100",
+          "type": "cpa",
+          "title": "Яндекс Такси −100₽",
+          "base_url": "https://YOUR_CPA_LINK/taxi",
+          "active": true
+        }
+      ]
+    }
+  ]
+}
