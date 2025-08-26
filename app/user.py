@@ -5,7 +5,7 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from dotenv import load_dotenv
 from .db import db
-from .referral import ensure_user, set_referrers, distribute_purchase_profit
+from .referral import ensure_user, set_referrers
 
 load_dotenv()
 OFFERS_PATH = os.getenv("OFFERS_PATH", "./data/offers.json")
@@ -39,7 +39,7 @@ def offers_kb(cat, offs):
 @router.message(CommandStart(deep_link=True))
 async def start_deeplink(m: Message):
     await ensure_user(m.from_user)
-    ref = m.text.split(" ", 1)[1] if len(m.text.split(" ",1))>1 else None
+    ref = m.text.split(" ", 1)[1] if len(m.text.split(" ", 1)) > 1 else None
     if ref and ref.isdigit():
         await set_referrers(m.from_user.id, int(ref))
     await start(m)
@@ -109,7 +109,7 @@ async def open_offer(c: CallbackQuery):
         url = f'{o["base_url"]}?sub1={c.from_user.id}'
         kb.button(text="Открыть скидку 🔗", url=url)
     elif o["type"] == "coupon":
-        kb.button(text=f"Купить за {o.get('price',0)} ₽", callback_data=f"buy:{o['id']}")
+        kb.button(text=f"Купить за {o.get('price', 0)} ₽", callback_data=f"buy:{o['id']}")
     kb.button(text="⬅️ Назад", callback_data=f"cat:{o['category']}")
     kb.adjust(1)
     await c.message.edit_text(f"🎟 {o['title']}", reply_markup=kb.as_markup())
