@@ -77,7 +77,7 @@ async def earn(m: Message):
             f"Баланс: {bal/100:.2f} ₽")
     await m.answer(text, parse_mode="Markdown")
 
-@router.callback_query(F.data=="back:cats"))
+@router.callback_query(F.data == "back:cats")
 async def back_cats(c: CallbackQuery):
     data, _ = load_offers()
     await c.message.edit_text("Категории:", reply_markup=cats_kb(data.get("categories", [])))
