@@ -7,6 +7,22 @@ from dotenv import load_dotenv
 from .db import db
 from .referral import ensure_user, set_referrers
 
+WELCOME_TEXT = """
+👋 Привет!  
+Я — Купонатор 🎟  
+
+📌 Здесь ты найдёшь:  
+— скидки и акции в популярных сервисах  
+— купоны и промокоды  
+— халявные предложения  
+
+💸 Хочешь не только экономить, но и зарабатывать?  
+Расскажи друзьям о боте и получай бонусы за их покупки.  
+
+👇 Выбирай категорию и смотри, что у меня есть для тебя прямо сейчас!
+"""
+
+
 load_dotenv()
 OFFERS_PATH = os.getenv("OFFERS_PATH", "./data/offers.json")
 router = Router()
@@ -58,14 +74,14 @@ async def start_deeplink(m: Message):
     await start(m)
 
 @router.message(CommandStart())
-async def start(m: Message):
-    await ensure_user(m.from_user)
-    data, _ = load_offers()
-    await m.answer(
-        "Привет! Я «Купонатор» 🎟\n"
-        "Выбирай категорию купонов или жми /earn, чтобы зарабатывать вместе с нами.\n"
-        "Твою реферальную ссылку можно взять в /ref или кнопкой «👥 Пригласить друзей».",
-        reply_markup=cats_kb(data.get("categories", []))
+async def cmd_start(m: Message):
+    kb = InlineKeyboardBuilder()
+    kb.button(text="🎟 Каталог купонов", callback_data="catalog")
+    kb.button(text="👥 Рефералка", callback_data="ref")
+    kb.button(text="ℹ️ Помощь", callback_data="help")
+    kb.adjust(1)
+    await m.answer(WELCOME_TEXT, reply_markup=kb.as_markup())
+
     )
 
 @router.message(Command("promos"))
