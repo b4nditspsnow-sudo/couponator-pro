@@ -1,7 +1,8 @@
-import asyncio, os
+import os
 from aiogram import Bot, Dispatcher
 from aiogram.types import BotCommand
 from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.client.default import DefaultBotProperties
 from dotenv import load_dotenv
 from .db import init_db
 from .user import router as user_router
@@ -12,7 +13,8 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 if not BOT_TOKEN:
     raise RuntimeError("BOT_TOKEN is not set")
 
-bot = Bot(BOT_TOKEN, parse_mode="HTML")
+# ✅ Aiogram 3.7: parse_mode через DefaultBotProperties
+bot = Bot(BOT_TOKEN, default=DefaultBotProperties(parse_mode="HTML"))
 dp = Dispatcher(storage=MemoryStorage())
 dp.include_router(user_router)
 dp.include_router(admin_router)
